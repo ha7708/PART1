@@ -1,0 +1,52 @@
+buildscript{
+    ext{    // 전역변수 설정
+        springBootVersion = '2.1.7.RELEASE' // 해당 버전을 의존성으로 받겠다.
+    }
+    repositories{   // 각종 의존성(라이브러리) 들을 어떤 원격 저장소에서 받을지 정함
+        mavenCentral()  // 기존 多사용. BUT 라이브러리 업로드 난이도 上(설정 과정 多)
+        jcenter()       // jcenter 는 ㄴ 이런 문제 개선. 여기서 업로드 시 mavenCentral도 업로드 가능
+    }
+    dependencies{   // 프로젝트 개발에 필요한 의존성들을 선언하는 곳
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")    // 자동 관리
+    }
+}
+
+// 아래 4 플러그인 필수 추가 - 스프링 부트의 의존성들을 관리해 주는 플러그인...
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group 'com.jsy.book'
+version '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+ 
+repositories{
+    mavenCentral()
+}
+
+dependencies{ // gradle 실행시 관련 라이브러리들을 받음.
+
+    // Gradle 5 이전: compile, testCompile. 이후: implementation, testImplementation
+    //implementation('org.projectlombok:lombok') // 롬복: 필수 라이브러리. Getter/Setter/기본생성자/toString 등을 어노테이션으로 자동생성
+    compile('org.springframework.boot:spring-boot-starter-web')  // 자동완성의 : 뒤에 버전명시 X
+    testCompile('org.springframework.boot:spring-boot-starter-test') // 직접 명시하지 않아야 자동 관리
+    compile('org.projectlombok:lombok')
+
+    // Spring Data JPA 적용하기
+    compile('org.springframework.boot:spring-boot-starter-data-jpa') // 스프링부트용 Spring Data JPA 추상화 라이브러리.
+    compile('com.h2database:h2') // 인메모리 RDBMS = 임시TBL개념. 별도 설치필요 X, 의존성만으로 관리 가능
+    compile('org.springframework.boot:spring-boot-starter-mustache') // mustache (유사JSP, 템플릿 엔진)
+
+    testCompile('org.assertj:assertj-core:3.11.1')
+    testCompile('junit:junit:4.7')
+    compile('mysql:mysql-connector-java:5.1.40')
+    compile('org.springframework:spring-jdbc:3.0.7.RELEASE')
+    testCompile('org.springframework:spring-test:5.1.9.RELEASE')
+
+}
+
+// 의존성 코드는 특정 버전을 명시X. 그래야 버전 관리가 한 곳에 집중 > 충돌 문제 개선됨.(자동 관리)
+
+// ./gradlew wrapper --gradle version 4.10.2
+

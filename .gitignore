@@ -1,0 +1,9 @@
+.gradle
+.idea
+.xml
+
+# Project exclude paths
+/build/
+/out/
+/out/production/classes/
+/out/test/classes/
