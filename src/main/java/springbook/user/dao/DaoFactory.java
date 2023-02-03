@@ -24,15 +24,12 @@ public class DaoFactory {
         return dataSource;
     }
 
-
     @Bean
     public UserDao userDao(){   // UserDao는 이제 DataSource 를 DI 받음.
         UserDao userDao = new UserDao();
         userDao.setDataSource(dataSource());
         return userDao;
     }
-
-
 
 }
 
